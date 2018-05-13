@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Join | ChatApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+</head>
+<!-- login block -->
+<body class="centered-form">
+  <div class="centered-form__form login-block">
+    <form action="/login" method="POST">
+      <div class="form-field">
+        <h3>Cherry IT<br />Messenger<h3>
+      </div>
+      <div class="form-field">
+        <label>Username</label>
+        <input type="text" name="username" autofocus required/>
+      </div>
+      <div class="form-field">
+        <label>Password</label>
+        <input type="password" name="password" required/>
+      </div>
+      <div class="form-field">
+        <label>Room name</label>
+        <input type="text" name="room" required/>
+      </div>
+      <div class="form-field">
+        <label>Room's password</label>
+        <input type="password" name="room-password" required/>
+      </div>
+      <div class="form-field">
+        <button>Join</button>
+      </div>
+      <div class="form-field">
+        <button class="register-button">Register</button>
+      </div>
+    </form>
+    <div id="root"></div>
+  </div>
+<!-- register block -->
+  <div class="centered-form__form register-block">
+    <form action="/register" method="POST">
+      <div class="form-field">
+        <h3>Cherry IT<br />Messenger<h3>
+      </div>
+      <div class="form-field">
+        <label>Username</label>
+        <input type="text" name="re_username" autofocus required/>
+      </div>
+      <div class="form-field">
+        <label>Full name</label>
+        <input type="text" name="re_name" required/>
+      </div>
+      <div class="form-field">
+        <label>Password</label>
+        <input type="password" name="re_password" required/>
+      </div>
+      <div class="form-field">
+        <label>Re-password</label>
+        <input type="password" name="re_repassword" required/>
+      </div>
+      <div class="form-field">
+        <button>Register</button>
+      </div>
+      <div class="form-field register-back">
+        <button class="login-button">Log in</button>
+      </div>
+    </form>
+    <div id="root"></div>
+  </div>
+  <script>
+    $(document).ready(function(){
+     $('.login-button').click(()=>{
+      $('.register-block').css('display', 'none');
+      $('.login-block').css('display', 'block');
+      return false;
+     });
+      $('.register-button').click(function(){
+        $('.login-block').css('display', 'none');
+        $('.register-block').css('display', 'block');
+        return false;
+     });
+    });
+    </script>
+</body>
+
+
+</html>
