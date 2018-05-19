@@ -1,5 +1,5 @@
 var socket = io();
-
+var params;
 function scrollToBottom () {
   // Selectors
   var messages = jQuery('#messages');
@@ -17,7 +17,7 @@ function scrollToBottom () {
 }
 
 socket.on('connect', function () {
-  var params = jQuery.deparam(window.location.search);
+  params = jQuery.deparam(window.location.search);
 
   socket.emit('join', params, function (err) {
     if (err) {
@@ -25,6 +25,7 @@ socket.on('connect', function () {
       window.location.href = '/';
     } else {
       console.log('No error');
+      $('.room-name').text(`Room: ${params.room}`);
     }
   });
 });
@@ -34,10 +35,11 @@ socket.on('disconnect', function () {
 });
 
 socket.on('updateUserList', function (users) {
-  var ol = jQuery('<ol></ol>');
+  var ol = jQuery('<ul></ul>');
+  ol.addClass('user-list');
 
   users.forEach(function (user) {
-    ol.append(jQuery('<li></li>').text(user));
+    ol.append(jQuery('<li><img src="../img/svg/man.svg" /></li>').text(user));
   });
 
   jQuery('#users').html(ol);
@@ -51,7 +53,12 @@ socket.on('newMessage', function (message) {
     from: message.from,
     createdAt: formattedTime
   });
-
+  var wr = document.createElement('div');
+  wr.innerHTML = html;
+  var elem = wr.children[0].children[0].children[0].innerHTML;
+  if(elem == params.name){
+    $('.message:last').addClass('float-right');
+  }
   jQuery('#messages').append(html);
   scrollToBottom();
 });
@@ -100,3 +107,5 @@ locationButton.on('click', function () {
     alert('Unable to fetch location.');
   });
 });
+
+console.log(document.getElementsByClassName('user-list').innerHTML);

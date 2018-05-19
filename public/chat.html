@@ -7,12 +7,19 @@
   <title>Chat | ChatApp</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="shortcut icon" href="/img/cherries.png" type="image/png">
 </head>
 
 <body class="chat">
 
   <div class="chat__sidebar">
-    <h3>People</h3>
+    <div><h3 class="room-name"></h3></div>
+    <div><h3 class="members"></h3></div>
+    <form id="search-form">
+      <div class="form-field">
+        <input type="search" name="rearch-input" placeholder="Search" />
+      </div>
+    </form>
     <div id="users"></div>
   </div>
 
@@ -60,6 +67,27 @@
   <script src="/js/libs/mustache.js"></script>
   <script src="/js/libs/deparam.js"></script>
   <script src="/js/chat.js"></script>
+  <script type="text/javascript">
+      var searchFilter = {
+    options: { valueNames: ['name'] },
+    init: function() {
+      var userList = new List('users', this.options);
+      var noItems = $('<li id="no-items-found">No items found</li>');
+      
+      userList.on('updated', function(list) {
+        if (users.matchingItems.length === 0) {
+          $(users.list).append(noItems);
+        } else {
+          noItems.detach();
+        }
+      });
+    }
+  };
+  
+  searchFilter.init();
+  
+}();
+  </script>
 </body>
 
 </html>

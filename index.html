@@ -75,43 +75,7 @@
     </form>
     <div id="root"></div>
   </div>
-  <div class="centered-form__form rooms-block">
-    <form action="/findroom" method="POST">
-      <div class="form-field">
-        <h3>Cherry rooms<h3>
-      </div>
-      <div class="form-field">
-        <label>Room name</label>
-        <input type="text" name="room" required/>
-      </div>
-      <div class="form-field">
-        <label>Room's password</label>
-        <input type="password" name="room-password" required/>
-      </div>
-      <div class="form-field">
-        <button>Join</button>
-      </div>
-    </form>
-  </div>
   <script>
-    $(document).ready(function () {
-      $('#login_form').on('submit', function (e) {
-        e.preventDefault();
-
-        var url = $(this).attr('action');
-        var method = $(this).attr('method');
-
-        $.ajax({
-          url: url,
-          method: method
-        }).done(function (data) {
-          $('.login-block').css('display', 'none');
-          $('.rooms-block').css('display', 'block');
-        });
-      });
-
-
-      
       $('.login-button').click(function () {
         $('.register-block').css('display', 'none');
         $('.login-block').css('display', 'block');
@@ -122,7 +86,6 @@
         $('.register-block').css('display', 'block');
         return false;
       });
-    });
     </script>
 </body>
 

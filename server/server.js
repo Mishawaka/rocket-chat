@@ -14,9 +14,10 @@ const flash = require('connect-flash');
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
 const {Users} = require('./utils/users');
-const User = require('../models/users');
 
-mongoose.connect('mongodb://localhost:27017/chat');
+var User = require('../models/user'); 
+
+mongoose.connect('mongodb://cherry:cherry_2010@ds119060.mlab.com:19060/cherry-chat');
 
 var db = mongoose.connection;
 db.once('open', ()=>{
@@ -45,8 +46,9 @@ app.use(passport.session());
 
 
 passport.use(new LocalStrategy(function(username, password, done) {
+  debugger;
   const query = {
-    username
+    username: username
   };
 
   User.findOne(query, function(err, user){
@@ -120,24 +122,18 @@ app.post('/register', (req, res)=>{
   newUser.username = username;
   newUser.name = name;
   newUser.password = password;
-  // bcrypt.genSalt(10, (err, salt)=>{
-  //   bcrypt.hash(newUser.password, salt, (err, hash)=>{
-  //     if (err){
-  //       console.log(err);
-  //     }
-  //     newUser.password = hash;
-  //     newUser.save((err)=>{
-  //       if(err){
-  //         console.log(err);
-  //         return;
-  //       }else{
-  //         req.flash('success', 'User created, You can log in');
-  //         res.redirect('/people/login');
-  //       }
-  //     })
-  //   });
-  // });
-  console.log(newUser);
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) throw err;
+    bcrypt.hash(newUser.password, salt, (err, hash) => {
+      if (err) throw err;
+      newUser.password = hash;
+      newUser.save((err) => {
+        if (err) throw err;
+        console.log(newUser);
+        res.redirect('/');
+      });
+    });
+  });
   }
 });
 
