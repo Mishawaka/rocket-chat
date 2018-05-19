@@ -3,9 +3,10 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Join | ChatApp</title>
+  <title>Join | Cherry Messenger</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="shortcut icon" href="/img/cherries.png" type="image/png">
   <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -14,7 +15,7 @@
 <!-- login block -->
 <body class="centered-form">
   <div class="centered-form__form login-block">
-    <form action="/login" method="POST">
+    <form action="/login" method="POST" id="login_form">
       <div class="form-field">
         <h3>Cherry IT<br />Messenger<h3>
       </div>
@@ -26,16 +27,16 @@
         <label>Password</label>
         <input type="password" name="password" required/>
       </div>
-      <div class="form-field">
+      <!-- <div class="form-field">
         <label>Room name</label>
         <input type="text" name="room" required/>
       </div>
       <div class="form-field">
         <label>Room's password</label>
         <input type="password" name="room-password" required/>
-      </div>
+      </div> -->
       <div class="form-field">
-        <button>Join</button>
+        <button class="goroom-buttom">Log in</button>
       </div>
       <div class="form-field">
         <button class="register-button">Register</button>
@@ -74,18 +75,53 @@
     </form>
     <div id="root"></div>
   </div>
+  <div class="centered-form__form rooms-block">
+    <form action="/findroom" method="POST">
+      <div class="form-field">
+        <h3>Cherry rooms<h3>
+      </div>
+      <div class="form-field">
+        <label>Room name</label>
+        <input type="text" name="room" required/>
+      </div>
+      <div class="form-field">
+        <label>Room's password</label>
+        <input type="password" name="room-password" required/>
+      </div>
+      <div class="form-field">
+        <button>Join</button>
+      </div>
+    </form>
+  </div>
   <script>
-    $(document).ready(function(){
-     $('.login-button').click(()=>{
-      $('.register-block').css('display', 'none');
-      $('.login-block').css('display', 'block');
-      return false;
-     });
-      $('.register-button').click(function(){
+    $(document).ready(function () {
+      $('#login_form').on('submit', function (e) {
+        e.preventDefault();
+
+        var url = $(this).attr('action');
+        var method = $(this).attr('method');
+
+        $.ajax({
+          url: url,
+          method: method
+        }).done(function (data) {
+          $('.login-block').css('display', 'none');
+          $('.rooms-block').css('display', 'block');
+        });
+      });
+
+
+      
+      $('.login-button').click(function () {
+        $('.register-block').css('display', 'none');
+        $('.login-block').css('display', 'block');
+        return false;
+      });
+      $('.register-button').click(function () {
         $('.login-block').css('display', 'none');
         $('.register-block').css('display', 'block');
         return false;
-     });
+      });
     });
     </script>
 </body>

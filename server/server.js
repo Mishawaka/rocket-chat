@@ -76,7 +76,7 @@ passport.deserializeUser(function(id, done){
 });
 
 app.get('/', (req, res) => {
-  console.log(req.flash().error[0]);
+  // console.log(req.flash().error[0]);
   res.sendFile(path.join(__dirname, '../index.html'));
 });
 
@@ -87,6 +87,16 @@ app.get('/get-users', (req, res)=>{
   });
 });
 
+// app.post('/login', 
+//   passport.authenticate('local', {
+//     failureRedirect: `/`,
+//     failureFlash: true
+//   }),
+//   (req, res) => {
+//     res.redirect(`/chat.html?name=${req.body.username}&room=${req.body.room}`);
+//   }
+// );
+
 app.post('/login', 
   passport.authenticate('local', {
     failureRedirect: `/`,
@@ -95,7 +105,8 @@ app.post('/login',
   (req, res) => {
     res.redirect(`/chat.html?name=${req.body.username}&room=${req.body.room}`);
   }
-);
+); 
+
 
 app.post('/register', (req, res)=>{
   const username = req.body.re_username;
