@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Rooms | Cherry Messenger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="/public/css/styles.css">
+  <link rel="shortcut icon" href="/img/cherries.png" type="image/png">
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+	 <div class="centered-form__form rooms-block">
+    <form action="/findroom" method="POST">
+      <div class="form-field">
+        <h3>Cherry rooms<h3>
+      </div>
+      <div class="form-field">
+        <label>Room name</label>
+        <input type="text" name="room" required/>
+      </div>
+      <div class="form-field">
+        <label>Room's password</label>
+        <input type="password" name="room-password" required/>
+      </div>
+      <div class="form-field">
+        <button>Join</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
