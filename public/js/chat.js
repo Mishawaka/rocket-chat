@@ -108,4 +108,4 @@ locationButton.on('click', function () {
   });
 });
 
-console.log(document.getElementsByClassName('user-list').innerHTML);
+console.log(document.getElementsByClassName('user-list'));
