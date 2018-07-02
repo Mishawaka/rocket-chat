@@ -15,7 +15,8 @@ const {generateMessage, generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
 const {Users} = require('./utils/users');
 
-var User = require('../models/user'); 
+var User = require('../models/user');
+var Room = require('../models/room');
 
 mongoose.connect('mongodb://cherry:cherry_2010@ds119060.mlab.com:19060/cherry-chat');
 
@@ -89,15 +90,12 @@ app.get('/get-users', (req, res)=>{
   });
 });
 
-// app.post('/login', 
-//   passport.authenticate('local', {
-//     failureRedirect: `/`,
-//     failureFlash: true
-//   }),
-//   (req, res) => {
-//     res.redirect(`/chat.html?name=${req.body.username}&room=${req.body.room}`);
-//   }
-// );
+app.get('/get-rooms', (req, res) => {
+  Room.find((err, room) => {
+    if (err) throw err;
+    res.json(room);
+  });
+});
 
 app.post('/login', 
   passport.authenticate('local', {
@@ -105,7 +103,9 @@ app.post('/login',
     failureFlash: true
   }),
   (req, res) => {
-    res.redirect(`/chat.html?name=${req.body.username}&room=${req.body.room}`);
+    req.session.user = req.body.username;
+    console.log(req.session);
+    res.redirect(`/room.html`);
   }
 ); 
 
@@ -135,6 +135,23 @@ app.post('/register', (req, res)=>{
     });
   });
   }
+});
+
+app.post('/find-room', (req, res) => {
+  debugger;
+  var query = req.body.room;
+  var password = req.body.room_password;
+  Room.findOne({roomName: query}, (err, room) => {
+    if (err) throw err;
+    bcrypt.compare(password, room.password, (err, isMatch) => {
+      if (err) throw err;
+      if (isMatch) {
+        req.session.room = query;
+        res.redirect(`/chat.html?name=${req.session.user}&room=${req.session.room}`);
+      }
+      else{res.redirect('/room.html');}
+    });
+  });
 });
 
 io.on('connection', (socket) => {

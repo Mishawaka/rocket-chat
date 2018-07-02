@@ -32,7 +32,8 @@ button,button:hover {border:none;color:#fff;padding:10px}
     #login-block, #register-block, { position: fixed;}
 
     .register-block { display: none; }
-    .rooms-block { display: none;}
+    .create-room-block { display: none;}
+    .create-room-button, .find-room-button {width: 100%;}
 
     .register-button {
         cursor:pointer;

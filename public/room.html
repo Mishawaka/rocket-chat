@@ -6,29 +6,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="shortcut icon" href="/img/cherries.png" type="image/png">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" 
+  integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
   <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
 </head>
-<body>
-	 <div class="centered-form__form rooms-block">
-    <form action="/findroom" method="POST">
+<body class="centered-form">
+	 <div class="centered-form__form find-room-block">
+    <form action="/find-room" method="POST">
       <div class="form-field">
-        <h3>Cherry rooms<h3>
+        <h3>Find room</h3>
       </div>
+      <div class="rooms-list">
+          <ul class="rooms-list-ul list-group"></ul>
+        </div>
       <div class="form-field">
         <label>Room name</label>
         <input type="text" name="room" required/>
       </div>
       <div class="form-field">
         <label>Room's password</label>
-        <input type="password" name="room-password" required/>
+        <input type="password" name="room_password" required/>
       </div>
       <div class="form-field">
         <button>Join</button>
       </div>
     </form>
+    <button class="create-room-button">Create room</button>
   </div>
+  
+  <div class="centered-form__form create-room-block">
+    <form action="/create-room" method="POST">
+      <div class="form-field">
+        <h3>Create room</h3>
+      </div>
+      <div class="form-field">
+        <label>Room name</label>
+        <input type="text" name="create_room" required/>
+      </div>
+      <div class="form-field">
+        <label>Room's password</label>
+        <input type="password" name="create_room_password" required/>
+      </div>
+      <div class="form-field">
+        <label>Confirm password</label>
+        <input type="password" name="create_room_repassword" required/>
+      </div>
+      <div class="form-field">
+        <button>Create</button>
+      </div>
+    </form>
+    <button class="find-room-button">Find room</button>
+  </div>
+  <script>
+    $('.create-room-button').click(() => {
+      $('.find-room-block').css('display', 'none');
+      $('.create-room-block').css('display', 'block');
+    });
+
+    $('.find-room-button').click(() => {
+      $('.create-room-block').css('display', 'none');
+      $('.find-room-block').css('display', 'block');
+    });
+
+    fetch('/get-rooms')
+    .then((res) => res.json())
+    .then((rooms) => {
+      console.log(rooms);
+      rooms.forEach(room => {
+        $('.rooms-list-ul').append(`<li class="list-group-item">${room.roomName}</li>`);
+      });
+    })
+    .catch(alert);
+  </script>
 </body>
 </html>

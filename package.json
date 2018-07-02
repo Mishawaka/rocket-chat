@@ -28,12 +28,12 @@
     "passport-local": "^1.0.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "socket.io": "^1.4.8",
+    "socket.io": "^2.1.1",
     "webpack": "^4.8.1"
   },
   "devDependencies": {
     "expect": "^1.20.2",
-    "mocha": "^3.0.2",
+    "mocha": "^5.2.0",
     "nodemon": "^1.10.2",
     "webpack-cli": "^2.1.3"
   }
