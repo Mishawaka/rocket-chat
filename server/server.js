@@ -17,6 +17,7 @@ const {Users} = require('./utils/users');
 
 var User = require('../models/user');
 var Room = require('../models/room');
+var Message = require('../models/message');
 
 mongoose.connect('mongodb://cherry:cherry_2010@ds119060.mlab.com:19060/cherry-chat');
 
@@ -97,6 +98,13 @@ app.get('/get-rooms', (req, res) => {
   });
 });
 
+app.get('/get-messages/:room', (req, res) => {
+  Message.find({from: req.params.room}, (err, messages) => {
+    if (err) throw err;
+    res.json(messages);
+  });
+});
+
 app.post('/login', 
   passport.authenticate('local', {
     failureRedirect: `/`,
@@ -138,7 +146,6 @@ app.post('/register', (req, res)=>{
 });
 
 app.post('/find-room', (req, res) => {
-  debugger;
   var query = req.body.room;
   var password = req.body.room_password;
   Room.findOne({roomName: query}, (err, room) => {
@@ -152,6 +159,27 @@ app.post('/find-room', (req, res) => {
       else{res.redirect('/room.html');}
     });
   });
+});
+
+app.post('/create-room', (req, res) => {
+  var room = new Room();
+  room.roomName = req.body.create_room;
+  room.password = req.body.create_room_password;
+  if(room.password != req.body.create_room_repassword) {
+    res.redirect('/room.html');
+  } else {
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) throw err;
+      bcrypt.hash(room.password, salt, (err, hash) => {
+        if (err) throw err;
+        room.password = hash;
+        room.save((err) => {
+          if (err) throw err;
+          res.redirect('/room.html');
+        });
+      });
+    });
+  }
 });
 
 io.on('connection', (socket) => {
@@ -172,6 +200,7 @@ io.on('connection', (socket) => {
 
     io.to(params.room).emit('updateUserList', users.getUserList(params.room));
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+    socket.emit('messagesHistory');
     socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
     callback();
   });
@@ -182,6 +211,16 @@ io.on('connection', (socket) => {
     if (user && isRealString(message.text)) {
       io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
     }
+
+    var mess = new Message();
+    mess.text = message.text;
+    mess.time = Date.now();
+    mess.author = user.name;
+    mess.from = user.room;
+    mess.save((err) => {
+      if (err) throw err;
+      console.log('Message sent');
+    });
 
     callback();
   });

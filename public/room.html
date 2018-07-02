@@ -48,14 +48,30 @@
       </div>
       <div class="form-field">
         <label>Room's password</label>
-        <input type="password" name="create_room_password" required/>
+        <input class="create_room_password" type="password" name="create_room_password" required/>
       </div>
       <div class="form-field">
         <label>Confirm password</label>
-        <input type="password" name="create_room_repassword" required/>
+        <input class="create_room_repassword" type="password" name="create_room_repassword" required/>
       </div>
+
+      <script>
+        $('input').keyup(() => {
+          $('.create_room_repassword').css('border', '2px solid red');
+          if ($('.create_room_repassword').val() == $('.create_room_password').val()) {
+            $('.create_room_repassword').css('border', '3px solid green');
+          }
+          else if ($('.create_room_repassword').val() == '') {
+            $('.create_room_repassword').css('border', '1px solid #e1e1e1')
+          }
+          else {
+            $('.create').attr('disabled', 'true');
+          }
+        });
+      </script>
+
       <div class="form-field">
-        <button>Create</button>
+        <button class="create">Create</button>
       </div>
     </form>
     <button class="find-room-button">Find room</button>

@@ -45,6 +45,26 @@ socket.on('updateUserList', function (users) {
   jQuery('#users').html(ol);
 });
 
+socket.on('messagesHistory', () => {
+  fetch(`/get-messages/${params.room}`)
+  .then((res) => {
+    return res.json();
+  })
+  .then((messages) => {
+    messages.forEach(message => {
+      var formattedTime = moment(message.time).format('h:mm a');
+      var template = jQuery('#message-template').html();
+      var html = Mustache.render(template, {
+        text: message.text,
+        from: message.author,
+        createdAt: formattedTime
+      });
+      jQuery('#messages').append(html);
+    });
+  })
+  .catch(alert);
+});
+
 socket.on('newMessage', function (message) {
   var formattedTime = moment(message.createdAt).format('h:mm a');
   var template = jQuery('#message-template').html();
@@ -53,12 +73,6 @@ socket.on('newMessage', function (message) {
     from: message.from,
     createdAt: formattedTime
   });
-  var wr = document.createElement('div');
-  wr.innerHTML = html;
-  var elem = wr.children[0].children[0].children[0].innerHTML;
-  if(elem == params.name){
-    $('.message:last').addClass('float-right');
-  }
   jQuery('#messages').append(html);
   scrollToBottom();
 });
