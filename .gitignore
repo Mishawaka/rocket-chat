@@ -4,3 +4,6 @@ database.rules.json
 firebase.debug.log
 firestore.indexes.json
 firestore.rules
+firebase.json
+.firebaserc
+storage.rules
