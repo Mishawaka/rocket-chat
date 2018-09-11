@@ -105,17 +105,16 @@ app.get('/get-messages/:room', (req, res) => {
   });
 });
 
-app.post('/login', 
+app.post('/login',
   passport.authenticate('local', {
     failureRedirect: `/`,
     failureFlash: true
   }),
   (req, res) => {
     req.session.user = req.body.username;
-    console.log(req.session);
     res.redirect(`/room.html`);
   }
-); 
+);
 
 
 app.post('/register', (req, res)=>{
@@ -229,7 +228,7 @@ io.on('connection', (socket) => {
     var user = users.getUser(socket.id);
 
     if (user) {
-      io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));  
+      io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
     }
   });
 
